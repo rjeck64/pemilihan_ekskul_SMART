@@ -76,7 +76,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
                 // Insert into nilai_kriteria table for each criteria
                 foreach ($criteria_names as $criteria_name) {
-                    $nilai = $_POST['nilai_' . $kd_ekskul . '_' . strtolower(str_replace(' ', '_', $criteria_name))];
+                    $nilai = $_POST['nilai_' . $kd_ekskul . '_' . $criteria_name];
 
                     // Insert into nilai_kriteria table
                     $id_kriteria_query = "SELECT id_kriteria FROM kriteria WHERE nama_kriteria = '$criteria_name'";

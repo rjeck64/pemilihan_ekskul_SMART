@@ -5,19 +5,20 @@ include '../../koneksi.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Dapatkan data dari form
     $nm_siswa = $_POST['nm_siswa'];
-    $alamat = $_POST['alamat'];
-    $no_telepon = $_POST['no_telepon'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $tanggal_lahir = $_POST['tanggal_lahir'];
-    $kelas = $_POST['kelas'];
+    $minat = $_POST['minat'];
+    $pengalaman = $_POST['pengalaman'];
+    $teknikal = $_POST['teknikal'];
+    $fisik = $_POST['fisik'];
+    $komunikasi = $_POST['komunikasi'];
+    $kerjasama_tim = $_POST['kerjasama_tim'];
 
     // Query untuk menambahkan data siswa
-    $sql = "INSERT INTO siswa (nm_siswa, alamat, no_telepon, jenis_kelamin, tanggal_lahir, kelas) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO siswa (nm_siswa, minat, pengalaman, teknikal, fisik, komunikasi, kerjasama_tim) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     // Siapkan statement
     if ($stmt = $conn->prepare($sql)) {
         // Bind parameter ke statement
-        $stmt->bind_param("ssssss", $nm_siswa, $alamat, $no_telepon, $jenis_kelamin, $tanggal_lahir, $kelas);
+        $stmt->bind_param("sssssss", $nm_siswa, $minat, $pengalaman, $teknikal, $fisik, $komunikasi, $kerjasama_tim);
 
         // Eksekusi statement
         if ($stmt->execute()) {

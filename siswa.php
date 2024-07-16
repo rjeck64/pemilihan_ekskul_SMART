@@ -17,11 +17,12 @@ $result = $conn->query($sql);
                         <tr>
                             <th>No</th>
                             <th>Nama Siswa</th>
-                            <th>Alamat</th>
-                            <th>No Telepon</th>
-                            <th>Jenis Kelamin</th>
-                            <th>Tanggal Lahir</th>
-                            <th>Kelas</th>
+                            <th>Minat</th>
+                            <th>Pengalaman</th>
+                            <th>Teknikal</th>
+                            <th>Fisik</th>
+                            <th>Komunikasi</th>
+                            <th>Kerjasama Tim</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -34,13 +35,14 @@ $result = $conn->query($sql);
                                 echo "<tr>";
                                 echo "<td>" . $no++ . "</td>";
                                 echo "<td>" . $row["nm_siswa"] . "</td>";
-                                echo "<td>" . $row["alamat"] . "</td>";
-                                echo "<td>" . $row["no_telepon"] . "</td>";
-                                echo "<td>" . $row["jenis_kelamin"] . "</td>";
-                                echo "<td>" . $row["tanggal_lahir"] . "</td>";
-                                echo "<td>" . $row["kelas"] . "</td>";
+                                echo "<td>" . $row["minat"] . "</td>";
+                                echo "<td>" . $row["pengalaman"] . "</td>";
+                                echo "<td>" . $row["teknikal"] . "</td>";
+                                echo "<td>" . $row["fisik"] . "</td>";
+                                echo "<td>" . $row["komunikasi"] . "</td>";
+                                echo "<td>" . $row["kerjasama_tim"] . "</td>";
                                 echo '<td>
-                                        <button type="button" class="btn btn-primary btn-rounded btn-icon edit-button" data-id="' . $row["kd_siswa"] . '" data-name="' . $row["nm_siswa"] . '" data-address="' . $row["alamat"] . '" data-phone="' . $row["no_telepon"] . '" data-gender="' . $row["jenis_kelamin"] . '" data-birthdate="' . $row["tanggal_lahir"] . '" data-class="' . $row["kelas"] . '">
+                                        <button type="button" class="btn btn-primary btn-rounded btn-icon edit-button" data-id="' . $row["kd_siswa"] . '" data-name="' . $row["nm_siswa"] . '" data-minat="' . $row["minat"] . '" data-pengalaman="' . $row["pengalaman"] . '" data-teknikal="' . $row["teknikal"] . '" data-fisik="' . $row["fisik"] . '" data-komunikasi="' . $row["komunikasi"] . '" data-kerjasama_tim="' . $row["kerjasama_tim"] .  '">
                                             <i class="ti-pencil-alt"></i>
                                         </button>
                                         <button type="button" class="btn btn-danger btn-rounded btn-icon delete-button" data-id="' . $row["kd_siswa"] . '">
@@ -77,27 +79,65 @@ $result = $conn->query($sql);
             <input type="text" class="form-control" id="addName" name="nm_siswa" required>
           </div>
           <div class="form-group">
-            <label for="addAddress">Alamat</label>
-            <input type="text" class="form-control" id="addAddress" name="alamat" required>
-          </div>
-          <div class="form-group">
-            <label for="addPhone">No Telepon</label>
-            <input type="text" class="form-control" id="addPhone" name="no_telepon" required>
-          </div>
-          <div class="form-group">
-            <label for="addGender">Jenis Kelamin</label>
-            <select class="form-control" id="addGender" name="jenis_kelamin" required>
-              <option value="Laki-laki">Laki-laki</option>
-              <option value="Perempuan">Perempuan</option>
+            <label for="addMinat">Minat</label>
+            <select class="form-control" id="addMinat" name="minat" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="addBirthdate">Tanggal Lahir</label>
-            <input type="date" class="form-control" id="addBirthdate" name="tanggal_lahir" required>
+            <label for="addPengalaman">Pengalaman</label>
+            <select class="form-control" id="addPengalaman" name="pengalaman" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
           </div>
           <div class="form-group">
-            <label for="addClass">Kelas</label>
-            <input type="text" class="form-control" id="addClass" name="kelas" required>
+            <label for="addTeknikal">Teknikal</label>
+            <select class="form-control" id="addTeknikal" name="teknikal" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
+            
+          </div>
+          <div class="form-group">
+            <label for="addFisik">Fisik</label>
+            <select class="form-control" id="addFisik" name="fisik" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="addKomunikasi">Komunikasi</label>
+            <select class="form-control" id="addKomunikasi" name="komunikasi" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="addKerjasama">Kerjasama Tim</label>
+            <select class="form-control" id="addKerjasama" name="kerjasama_tim" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
           </div>
         </form>
       </div>
@@ -124,30 +164,68 @@ $result = $conn->query($sql);
           <input type="hidden" id="editId">
           <div class="form-group">
             <label for="editName">Nama Siswa</label>
-            <input type="text" class="form-control" id="editName" name="nm_siswa">
+            <input type="text" class="form-control" id="editName" name="nm_siswa" required>
           </div>
           <div class="form-group">
-            <label for="editAddress">Alamat</label>
-            <input type="text" class="form-control" id="editAddress" name="alamat">
-          </div>
-          <div class="form-group">
-            <label for="editPhone">No Telepon</label>
-            <input type="text" class="form-control" id="editPhone" name="no_telepon">
-          </div>
-          <div class="form-group">
-            <label for="editGender">Jenis Kelamin</label>
-            <select class="form-control" id="editGender" name="jenis_kelamin">
-              <option value="Laki-laki">Laki-laki</option>
-              <option value="Perempuan">Perempuan</option>
+            <label for="editMinat">Minat</label>
+            <select class="form-control" id="editMinat" name="minat" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
             </select>
           </div>
           <div class="form-group">
-            <label for="editBirthdate">Tanggal Lahir</label>
-            <input type="date" class="form-control" id="editBirthdate" name="tanggal_lahir">
+            <label for="editPengalaman">Pengalaman</label>
+            <select class="form-control" id="editPengalaman" name="pengalaman" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
           </div>
           <div class="form-group">
-            <label for="editClass">Kelas</label>
-            <input type="text" class="form-control" id="editClass" name="kelas">
+            <label for="editTeknikal">Teknikal</label>
+            <select class="form-control" id="editTeknikal" name="teknikal" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
+            
+          </div>
+          <div class="form-group">
+            <label for="editFisik">Fisik</label>
+            <select class="form-control" id="editFisik" name="fisik" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editKomunikasi">Komunikasi</label>
+            <select class="form-control" id="editKomunikasi" name="komunikasi" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editKerjasama">Kerjasama Tim</label>
+            <select class="form-control" id="editKerjasama" name="kerjasama_tim" required>
+              <option value="Sangat Kurang">Sangat Kurang</option>
+              <option value="Kurang">Kurang</option>
+              <option value="cukup">cukup</option>
+              <option value="baik">baik</option>
+              <option value="Sangat Baik">Sangat Baik</option>
+            </select>
           </div>
         </form>
       </div>
@@ -164,11 +242,12 @@ function submitAddForm() {
   // Get form data
   var formData = {
     nm_siswa: document.getElementById('addName').value,
-    alamat: document.getElementById('addAddress').value,
-    no_telepon: document.getElementById('addPhone').value,
-    jenis_kelamin: document.getElementById('addGender').value,
-    tanggal_lahir: document.getElementById('addBirthdate').value,
-    kelas: document.getElementById('addClass').value
+    minat: document.getElementById('addMinat').value,
+    pengalaman: document.getElementById('addPengalaman').value,
+    teknikal: document.getElementById('addTeknikal').value,
+    fisik: document.getElementById('addFisik').value,
+    komunikasi: document.getElementById('addKomunikasi').value,
+    kerjasama_tim: document.getElementById('addKerjasama').value
   };
 
   // Send AJAX request to add data
@@ -194,20 +273,22 @@ document.addEventListener("DOMContentLoaded", function() {
     button.addEventListener('click', function() {
       var id = this.getAttribute('data-id');
       var name = this.getAttribute('data-name');
-      var address = this.getAttribute('data-address');
-      var phone = this.getAttribute('data-phone');
-      var gender = this.getAttribute('data-gender');
-      var birthdate = this.getAttribute('data-birthdate');
-      var className = this.getAttribute('data-class');
+      var minat = this.getAttribute('data-minat');
+      var pengalaman = this.getAttribute('data-pengalaman');
+      var teknikal = this.getAttribute('data-teknikal');
+      var fisik = this.getAttribute('data-fisik');
+      var komunikasi = this.getAttribute('data-komunikasi');
+      var kerjasama_tim = this.getAttribute('data-kerjasama_tim');
 
       // Set data to modal
       document.getElementById('editId').value = id;
       document.getElementById('editName').value = name;
-      document.getElementById('editAddress').value = address;
-      document.getElementById('editPhone').value = phone;
-      document.getElementById('editGender').value = gender;
-      document.getElementById('editBirthdate').value = birthdate;
-      document.getElementById('editClass').value = className;
+      document.getElementById('editMinat').value = minat;
+      document.getElementById('editPengalaman').value = pengalaman;
+      document.getElementById('editTeknikal').value = teknikal;
+      document.getElementById('editFisik').value = fisik;
+      document.getElementById('editKomunikasi').value = komunikasi;
+      document.getElementById('editKerjasama').value = kerjasama_tim;
 
       // Show modal
       $('#editModal').modal('show');
@@ -245,11 +326,12 @@ function submitEditForm() {
   var formData = {
     kd_siswa: document.getElementById('editId').value,
     nm_siswa: document.getElementById('editName').value,
-    alamat: document.getElementById('editAddress').value,
-    no_telepon: document.getElementById('editPhone').value,
-    jenis_kelamin: document.getElementById('editGender').value,
-    tanggal_lahir: document.getElementById('editBirthdate').value,
-    kelas: document.getElementById('editClass').value
+    minat: document.getElementById('editMinat').value,
+    pengalaman: document.getElementById('editPengalaman').value,
+    teknikal: document.getElementById('editTeknikal').value,
+    fisik: document.getElementById('editFisik').value,
+    komunikasi: document.getElementById('editKomunikasi').value,
+    kerjasama_tim: document.getElementById('editKerjasama').value
   };
 
   // Send AJAX request to update data

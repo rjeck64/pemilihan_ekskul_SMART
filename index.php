@@ -4,14 +4,14 @@ session_start();
 
 // Memeriksa apakah pengguna belum login
 if (!isset($_SESSION['user_id'])) {
-  header("Location: login.php");
-  exit();
+    header("Location: login.php");
+    exit();
 }
 
 // Memeriksa apakah pengguna memiliki level admin atau super admin
 if ($_SESSION['level'] != 'admin' && $_SESSION['level'] != 'superadmin') {
-  echo "Anda tidak memiliki izin untuk mengakses halaman ini.";
-  exit();
+    echo "Anda tidak memiliki izin untuk mengakses halaman ini.";
+    exit();
 }
 
 $i = $_GET['i'] ?? null;
@@ -26,7 +26,7 @@ $i = $_GET['i'] ?? null;
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Skydash Admin</title>
+    <title>SMP NEGERI 3 SUNGAI PENUH</title>
     <!-- plugins:css -->
     <link rel="stylesheet" href="vendors/feather/feather.css">
     <link rel="stylesheet" href="vendors/ti-icons/css/themify-icons.css">
@@ -66,8 +66,7 @@ $i = $_GET['i'] ?? null;
                                     <i class="icon-search"></i>
                                 </span>
                             </div>
-                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now"
-                                aria-label="search" aria-describedby="search">
+                            <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search" aria-describedby="search">
                         </div>
                     </li>
                 </ul>
@@ -78,10 +77,9 @@ $i = $_GET['i'] ?? null;
                     </li>
                     <li class="nav-item nav-profile dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-                            <img src="images/faces/face28.jpg" alt="profile" />
+                            <img src="images/profile.png" alt="profile" />
                         </a>
-                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown"
-                            aria-labelledby="profileDropdown">
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
                             <a class="dropdown-item" href="logout.php">
                                 <i class="ti-power-off text-primary"></i>
                                 Logout
@@ -89,8 +87,7 @@ $i = $_GET['i'] ?? null;
                         </div>
                     </li>
                 </ul>
-                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
-                    data-toggle="offcanvas">
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
                     <span class="icon-menu"></span>
                 </button>
             </div>
@@ -131,17 +128,17 @@ $i = $_GET['i'] ?? null;
                         </a>
                     </li>
                     <?php
-                        if ($_SESSION['level'] == "superadmin") { ?>
-                            <li class="nav-item <?php echo ($i == 'pengguna') ? 'active' : ''; ?>">
-                                <a class="nav-link" href="index.php?i=pengguna">
-                                    <i class="ti-user menu-icon"></i>
-                                    <span class="menu-title">Data Pengguna</span>
-                                </a>
-                            </li>
+                    if ($_SESSION['level'] == "superadmin") { ?>
+                        <li class="nav-item <?php echo ($i == 'pengguna') ? 'active' : ''; ?>">
+                            <a class="nav-link" href="index.php?i=pengguna">
+                                <i class="ti-user menu-icon"></i>
+                                <span class="menu-title">Data Pengguna</span>
+                            </a>
+                        </li>
                     <?php } ?>
-                    
-                    
-                    
+
+
+
                     <li class="nav-item <?php echo ($i == 'kriteria') ? 'active' : ''; ?>">
                         <a class="nav-link" href="index.php?i=kriteria">
                             <i class="ti-settings  menu-icon"></i>
@@ -197,36 +194,36 @@ $i = $_GET['i'] ?? null;
 
 
 
-          switch ($i) {
-            case 'kriteria':
-              include 'kriteria.php';
-              break;
-            case 'pengguna':
-              include 'pengguna.php';
-              break;
-            case 'ekskul':
-              include 'ekskul.php';
-              break;
-            case 'siswa':
-              include 'siswa.php';
-              break;
-            case 'alternatif':
-              include 'alternatif.php';
-              break;
-            case 'SMART':
-              include 'hitung.php';
-              break;
-            case 'hasilakhir':
-              include 'hasilakhir.php';
-              break;
+                    switch ($i) {
+                        case 'kriteria':
+                            include 'kriteria.php';
+                            break;
+                        case 'pengguna':
+                            include 'pengguna.php';
+                            break;
+                        case 'ekskul':
+                            include 'ekskul.php';
+                            break;
+                        case 'siswa':
+                            include 'siswa.php';
+                            break;
+                        case 'alternatif':
+                            include 'alternatif.php';
+                            break;
+                        case 'SMART':
+                            include 'hitung.php';
+                            break;
+                        case 'hasilakhir':
+                            include 'hasilakhir.php';
+                            break;
 
-            case null:
-            default:
-              include 'dashboard.php';
-              break;
-          }
+                        case null:
+                        default:
+                            include 'dashboard.php';
+                            break;
+                    }
 
-          ?>
+                    ?>
 
                 </div>
                 <!-- content-wrapper ends -->
@@ -235,8 +232,7 @@ $i = $_GET['i'] ?? null;
                     <div class="d-sm-flex justify-content-center justify-content-sm-between">
                         <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">SMP NEGERI 3 SUNGAI
                             PENUH</span>
-                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted <i
-                                class="ti-heart text-danger ml-1"></i> by Muhamad Haiqal</span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted <i class="ti-heart text-danger ml-1"></i> by Muhamad Haiqal</span>
                     </div>
                 </footer>
                 <!-- partial -->

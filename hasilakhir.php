@@ -14,6 +14,10 @@ if ($conn->connect_error) {
 $query_criteria = "SELECT nama_kriteria FROM kriteria ORDER BY nama_kriteria ASC";
 $result_criteria = $conn->query($query_criteria);
 
+// Query untuk mengambil nama-nama kriteria
+$query_ekskul = "SELECT nm_ekskul FROM ekskul";
+$result_ekskul = $conn->query($query_ekskul);
+
 $criteria_names = [];
 while ($row = $result_criteria->fetch_assoc()) {
     $criteria_names[] = $row['nama_kriteria'];
@@ -145,23 +149,27 @@ $conn->close();
 </head>
 
 <body>
-    <div class="col-lg-12 grid-margin stretch-card">
+    
+
+    <?php foreach ($result_ekskul as $allekskul):?>
+        
+        <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
 
-                <h2>Hasil Akhir: Ekstrakurikuler yang Paling Cocok</h2>                
+                <h2>Hasil Akhir: <?= $allekskul['nm_ekskul'] ?></h2>                
                 <table border="1">
                     <thead>
                         <tr>
                             <th>Nama Siswa</th>
-                            <th>Ekstrakurikuler yang Paling Cocok</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php foreach ($best_extracurricular as $student => $ekskul): ?>
                             <tr>
-                                <td><?php echo $student; ?></td>
-                                <td><?php echo $ekskul; ?></td>
+                                <?php if ($allekskul['nm_ekskul'] == $ekskul):?>
+                                    <td><?php echo $student; ?></td>
+                                <?php endif; ?>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -170,6 +178,7 @@ $conn->close();
             </div>
         </div>
     </div>
+    <?php endforeach; ?>
 </body>
 
 </html>

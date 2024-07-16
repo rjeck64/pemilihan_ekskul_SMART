@@ -68,7 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         $result_ekskul = $conn->query($query_ekskul);
         while ($row_ekskul = $result_ekskul->fetch_assoc()) {
             $kd_ekskul = $row_ekskul['kd_ekskul'];
-
+            // echo $kd_siswa;
+            // echo $kd_ekskul;
             // Insert into detail_siswa table
             $insert_detail_query = "INSERT INTO detail_siswa (kd_siswa, kd_ekskul) VALUES ('$kd_siswa', '$kd_ekskul')";
             if ($conn->query($insert_detail_query) === TRUE) {
@@ -76,8 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
                 // Insert into nilai_kriteria table for each criteria
                 foreach ($criteria_names as $criteria_name) {
-                    $nilai = $_POST['nilai_' . $kd_ekskul . '_' . $criteria_name];
-
+                    $nilai = $_POST['nilai_' . $kd_ekskul . '_' .  $criteria_name];
+                    // echo $nilai;
                     // Insert into nilai_kriteria table
                     $id_kriteria_query = "SELECT id_kriteria FROM kriteria WHERE nama_kriteria = '$criteria_name'";
                     $result_id_kriteria = $conn->query($id_kriteria_query);
@@ -154,24 +155,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-                    <h3>Data Siswa dan Ekstrakurikuler</h3>
-                    <button type="button" class="btn btn-primary mb-2" data-toggle="modal"
-                        data-target="#tambahDataModal">Tambah Data Siswa</button>
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nama Siswa</th>
-                                <th>Ekstrakurikuler</th>
-                                <?php foreach ($criteria_names as $criteria_name) : ?>
-                                <th><?php echo $criteria_name; ?></th>
-                                <?php endforeach; ?>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            // Fetch data from detail_siswa and nilai_kriteria tables
-                            $query_siswa = "
+            <h3>Data Siswa dan Ekstrakurikuler</h3>
+            <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#tambahDataModal">Tambah
+                Data Siswa</button>
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>Nama Siswa</th>
+                        <th>Ekstrakurikuler</th>
+                        <?php foreach ($criteria_names as $criteria_name) : ?>
+                            <th><?php echo $criteria_name; ?></th>
+                        <?php endforeach; ?>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    // Fetch data from detail_siswa and nilai_kriteria tables
+                    $query_siswa = "
                                     SELECT s.kd_siswa, s.nm_siswa, e.kd_ekskul, e.nm_ekskul, k.nama_kriteria, nk.nilai
                                     FROM siswa s
                                     JOIN detail_siswa ds ON s.kd_siswa = ds.kd_siswa
@@ -180,52 +181,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                                     JOIN kriteria k ON nk.id_kriteria = k.id_kriteria
                                     ORDER BY s.kd_siswa, e.kd_ekskul, k.nama_kriteria ASC
                                 ";
-                            $result_siswa = $conn->query($query_siswa);
-                            $current_siswa = null;
-                            $current_ekskul = null;
-                            $rowspan_count = 0;
-                            $current_edit = null;
-                            $kd_siswa_tampil = [];
+                    $result_siswa = $conn->query($query_siswa);
+                    $current_siswa = null;
+                    $current_ekskul = null;
+                    $rowspan_count = 0;
+                    $current_edit = null;
+                    $kd_siswa_tampil = [];
 
 
-                            while ($row_siswa = $result_siswa->fetch_assoc()) {
-                                $kd_siswa = $row_siswa['kd_siswa'];
-                                $nm_siswa = $row_siswa['nm_siswa'];
-                                $kd_ekskul = $row_siswa['kd_ekskul'];
-                                $nm_ekskul = $row_siswa['nm_ekskul'];
-                                $nama_kriteria = $row_siswa['nama_kriteria'];
-                                $nilai = $row_siswa['nilai'];
+                    while ($row_siswa = $result_siswa->fetch_assoc()) {
+                        $kd_siswa = $row_siswa['kd_siswa'];
+                        $nm_siswa = $row_siswa['nm_siswa'];
+                        $kd_ekskul = $row_siswa['kd_ekskul'];
+                        $nm_ekskul = $row_siswa['nm_ekskul'];
+                        $nama_kriteria = $row_siswa['nama_kriteria'];
+                        $nilai = $row_siswa['nilai'];
 
-                                $previous_siswa = $current_siswa;
-                                $previous_edit = $current_edit;
-                                // $current_siswa = $kd_siswa;
+                        $previous_siswa = $current_siswa;
+                        $previous_edit = $current_edit;
+                        // $current_siswa = $kd_siswa;
 
-                                if ($current_siswa != $kd_siswa) {
-                                    $current_siswa = $kd_siswa;
+                        if ($current_siswa != $kd_siswa) {
+                            $current_siswa = $kd_siswa;
 
-                                    $query_count_ekskul = "SELECT COUNT(*) AS total_ekskul FROM detail_siswa WHERE
+                            $query_count_ekskul = "SELECT COUNT(*) AS total_ekskul FROM detail_siswa WHERE
                                     kd_siswa = '$kd_siswa'";
-                                    $result_count_ekskul = $conn->query($query_count_ekskul);
-                                    if ($result_count_ekskul->num_rows > 0) {
-                                        $row_count_ekskul = $result_count_ekskul->fetch_assoc();
-                                        $rowspan_count = $row_count_ekskul['total_ekskul'];
-                                    }
+                            $result_count_ekskul = $conn->query($query_count_ekskul);
+                            if ($result_count_ekskul->num_rows > 0) {
+                                $row_count_ekskul = $result_count_ekskul->fetch_assoc();
+                                $rowspan_count = $row_count_ekskul['total_ekskul'];
+                            }
 
-                                    echo "<tr>";
-                                    echo "<td rowspan='{$rowspan_count}'>{$nm_siswa}</td>";
-                                }
+                            echo "<tr>";
+                            echo "<td rowspan='{$rowspan_count}'>{$nm_siswa}</td>";
+                        }
 
 
-                                if ($current_ekskul != $kd_ekskul) {
-                                    $current_ekskul = $kd_ekskul;
-                                    echo "<td>{$nm_ekskul}</td>";
-                                }
+                        if ($current_ekskul != $kd_ekskul) {
+                            $current_ekskul = $kd_ekskul;
+                            echo "<td>{$nm_ekskul}</td>";
+                        }
 
-                                echo "<td>{$nilai}</td>";
+                        echo "<td>{$nilai}</td>";
 
-                                if ($nama_kriteria == end($criteria_names)) {
-                                    if (!in_array($kd_siswa, $kd_siswa_tampil)) {
-                                        echo "<td rowspan='{$rowspan_count}'>
+                        if ($nama_kriteria == end($criteria_names)) {
+                            if (!in_array($kd_siswa, $kd_siswa_tampil)) {
+                                echo "<td rowspan='{$rowspan_count}'>
                                                 <button type='button' class='btn btn-primary btn-rounded btn-icon edit-btn' data-toggle='modal' data-target='#editDataModal' data-kd-siswa='{$kd_siswa}'>
                                                 <i class='ti-pencil-alt'></i>
                                                 </button>
@@ -233,223 +234,217 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                                                 <i class='ti-trash'></i>
                                                 </button>
                                               </td>";
-                                        $kd_siswa_tampil[] = $kd_siswa;
-                                    }
-                                    echo "</tr>";
-                                }
+                                $kd_siswa_tampil[] = $kd_siswa;
                             }
-                            ?>
-                        </tbody>
-                    </table>
+                            echo "</tr>";
+                        }
+                    }
+                    ?>
+                </tbody>
+            </table>
 
-                    <!-- Modal Tambah Data -->
-                    <div class="modal fade" id="tambahDataModal" tabindex="-1" role="dialog"
-                        aria-labelledby="tambahDataModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="tambahDataModalLabel">Tambah Data Siswa</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="POST" action="">
-                                        <div class="form-group">
-                                            <label for="nama_siswa">Nama Siswa</label>
-                                            <select class="form-control" id="nama_siswa" name="nama_siswa">
-                                                <?php
-                                                if ($result_nama_siswa->num_rows > 0) {
-                                                    while ($row_nama_siswa = $result_nama_siswa->fetch_assoc()) {
-                                                        echo "<option value='{$row_nama_siswa['nm_siswa']}'>{$row_nama_siswa['nm_siswa']}</option>";
-                                                    }
-                                                } else {
-                                                    echo "<option value=''>No students available</option>";
-                                                }
-                                                ?>
-                                            </select>
-                                        </div>
+            <!-- Modal Tambah Data -->
+            <div class="modal fade" id="tambahDataModal" tabindex="-1" role="dialog" aria-labelledby="tambahDataModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tambahDataModalLabel">Tambah Data Siswa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="">
+                                <div class="form-group">
+                                    <label for="nama_siswa">Nama Siswa</label>
+                                    <select class="form-control" id="nama_siswa" name="nama_siswa">
                                         <?php
-                                        // Fetch extracurricular activities and criteria dynamically
-                                        $query_ekskul = "SELECT * FROM ekskul";
-                                        $result_ekskul = $conn->query($query_ekskul);
-                                        while ($row_ekskul = $result_ekskul->fetch_assoc()) {
-                                            $kd_ekskul = $row_ekskul['kd_ekskul'];
-                                            $nm_ekskul = $row_ekskul['nm_ekskul'];
-
-                                            echo "<h5>{$nm_ekskul}</h5>";
-
-                                            foreach ($criteria_names as $criteria_name) {
-                                                echo "<div class='form-group'>";
-                                                echo "<label for='nilai_{$kd_ekskul}_{$criteria_name}'>{$criteria_name}</label>";
-                                                echo "<input type='number' class='form-control' id='nilai_{$kd_ekskul}_{$criteria_name}' name='nilai_{$kd_ekskul}_{$criteria_name}' required>";
-                                                echo "</div>";
+                                        if ($result_nama_siswa->num_rows > 0) {
+                                            while ($row_nama_siswa = $result_nama_siswa->fetch_assoc()) {
+                                                echo "<option value='{$row_nama_siswa['nm_siswa']}'>{$row_nama_siswa['nm_siswa']}</option>";
                                             }
+                                        } else {
+                                            echo "<option value=''>No students available</option>";
                                         }
                                         ?>
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <input type="hidden" name="action" value="add">
-                                    </form>
+                                    </select>
                                 </div>
-                            </div>
+                                <?php
+                                // Fetch extracurricular activities and criteria dynamically
+                                $query_ekskul = "SELECT * FROM ekskul";
+                                $result_ekskul = $conn->query($query_ekskul);
+                                while ($row_ekskul = $result_ekskul->fetch_assoc()) {
+                                    $kd_ekskul = $row_ekskul['kd_ekskul'];
+                                    $nm_ekskul = $row_ekskul['nm_ekskul'];
+
+                                    echo "<h5>{$nm_ekskul}</h5>";
+
+                                    foreach ($criteria_names as $criteria_name) {
+                                        echo "<div class='form-group'>";
+                                        echo "<label for='nilai_{$kd_ekskul}_{$criteria_name}'>{$criteria_name}</label>";
+                                        echo "<input type='number' class='form-control' id='nilai_{$kd_ekskul}_{$criteria_name}' name='nilai_{$kd_ekskul}_{$criteria_name}' required>";
+                                        echo "</div>";
+                                    }
+                                }
+                                ?>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <input type="hidden" name="action" value="add">
+                            </form>
                         </div>
                     </div>
-
-                    <!-- Modal Edit Data -->
-                    <div class="modal fade" id="editDataModal" tabindex="-1" role="dialog"
-                        aria-labelledby="editDataModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="editDataModalLabel">Edit Data Siswa</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form method="POST" action="">
-                                        <input type="hidden" id="edit_kd_siswa" name="kd_siswa">
-                                        <div class="form-group">
-                                            <label for="edit_nama_siswa">Nama Siswa</label>
-                                            <input type="text" class="form-control" id="edit_nama_siswa"
-                                                name="nama_siswa" required>
-                                        </div>
-                                        <!-- Dynamically generated input fields for criteria -->
-                                        <?php
-                                        // Fetch extracurricular activities and criteria dynamically
-                                        $query_ekskul = "SELECT * FROM ekskul";
-                                        $result_ekskul = $conn->query($query_ekskul);
-                                        while ($row_ekskul = $result_ekskul->fetch_assoc()) {
-                                            $kd_ekskul = $row_ekskul['kd_ekskul'];
-                                            $nm_ekskul = $row_ekskul['nm_ekskul'];
-
-                                            echo "<h5>{$nm_ekskul}</h5>";
-
-                                            foreach ($criteria_names as $criteria_name) {
-                                                echo "<div class='form-group'>";
-                                                echo "<label for='edit_nilai_{$kd_ekskul}_{$criteria_name}'>{$criteria_name}</label>";
-                                                echo "<input type='number' class='form-control' id='edit_nilai_{$kd_ekskul}_{$criteria_name}' name='edit_nilai_{$kd_ekskul}_{$criteria_name}' >";
-                                                echo "</div>";
-                                            }
-                                        }
-                                        ?>
-
-                                        <div id="edit_criteria_fields"></div>
-                                        <button type="submit" class="btn btn-primary">Simpan</button>
-                                        <input type="hidden" name="action" value="edit">
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
+            <!-- Modal Edit Data -->
+            <div class="modal fade" id="editDataModal" tabindex="-1" role="dialog" aria-labelledby="editDataModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editDataModalLabel">Edit Data Siswa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST" action="">
+                                <input type="hidden" id="edit_kd_siswa" name="kd_siswa">
+                                <div class="form-group">
+                                    <label for="edit_nama_siswa">Nama Siswa</label>
+                                    <input type="text" class="form-control" id="edit_nama_siswa" name="nama_siswa" required>
+                                </div>
+                                <!-- Dynamically generated input fields for criteria -->
+                                <?php
+                                // Fetch extracurricular activities and criteria dynamically
+                                $query_ekskul = "SELECT * FROM ekskul";
+                                $result_ekskul = $conn->query($query_ekskul);
+                                while ($row_ekskul = $result_ekskul->fetch_assoc()) {
+                                    $kd_ekskul = $row_ekskul['kd_ekskul'];
+                                    $nm_ekskul = $row_ekskul['nm_ekskul'];
+
+                                    echo "<h5>{$nm_ekskul}</h5>";
+
+                                    foreach ($criteria_names as $criteria_name) {
+                                        echo "<div class='form-group'>";
+                                        echo "<label for='edit_nilai_{$kd_ekskul}_{$criteria_name}'>{$criteria_name}</label>";
+                                        echo "<input type='number' class='form-control' id='edit_nilai_{$kd_ekskul}_{$criteria_name}' name='edit_nilai_{$kd_ekskul}_{$criteria_name}' >";
+                                        echo "</div>";
+                                    }
+                                }
+                                ?>
+
+                                <div id="edit_criteria_fields"></div>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                <input type="hidden" name="action" value="edit">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
+</div>
+</div>
 
 <!-- Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"
-    integrity="sha384-pzjw8f+ua7Kw1TIqvC2f0fUAKwj4+V/niGNDK5pF2I1BIeZlTAAeIV5W5YMe/iH" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-pzjw8f+ua7Kw1TIqvC2f0fUAKwj4+V/niGNDK5pF2I1BIeZlTAAeIV5W5YMe/iH" crossorigin="anonymous">
 </script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-    integrity="sha384-B4gt1jrGC7Jh4AgEPgkjsA3MCpBw1phtFfme6B2ntzlZ+z3h5Kd69zoT7rTAIGx4" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgEPgkjsA3MCpBw1phtFfme6B2ntzlZ+z3h5Kd69zoT7rTAIGx4" crossorigin="anonymous">
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.edit-btn').forEach(function(button) {
-        button.addEventListener('click', function() {
-            var kdSiswa = this.getAttribute('data-kd-siswa');
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.edit-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var kdSiswa = this.getAttribute('data-kd-siswa');
 
-            // Menggunakan Fetch API untuk mengambil data siswa yang dipilih
-            fetch('fetch_data.php?kd_siswa=' + kdSiswa, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log('Data yang diterima:');
-                    console.log(data);
+                // Menggunakan Fetch API untuk mengambil data siswa yang dipilih
+                fetch('fetch_data.php?kd_siswa=' + kdSiswa, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Data yang diterima:');
+                        console.log(data);
 
-                    // Mengisi nilai form dengan data yang diterima
-                    document.getElementById('edit_kd_siswa').value = data.data.kd_siswa;
-                    document.getElementById('edit_nama_siswa').value = data.data
-                        .nm_siswa;
+                        // Mengisi nilai form dengan data yang diterima
+                        document.getElementById('edit_kd_siswa').value = data.data.kd_siswa;
+                        document.getElementById('edit_nama_siswa').value = data.data
+                            .nm_siswa;
 
-                    // Loop untuk nilai_kriteria dan mengisi input fields yang sesuai
-                    // for (var ekskulId in data.data.nilai_kriteria) {
-                    //     if (data.data.nilai_kriteria.hasOwnProperty(ekskulId)) {
-                    //         var kriteriaSet = data.data.nilai_kriteria[ekskulId];
-                    //         console.log(kriteriaSet);
+                        // Loop untuk nilai_kriteria dan mengisi input fields yang sesuai
+                        // for (var ekskulId in data.data.nilai_kriteria) {
+                        //     if (data.data.nilai_kriteria.hasOwnProperty(ekskulId)) {
+                        //         var kriteriaSet = data.data.nilai_kriteria[ekskulId];
+                        //         console.log(kriteriaSet);
 
-                    //         for (var kriteriaId in kriteriaSet) {
-                    //             if (kriteriaSet.hasOwnProperty(kriteriaId)) {
-                    //                 var kriteria = kriteriaSet[kriteriaId];
-                    //                 var getNamaKriteria = inputElement.setAttribute(
-                    //                     'data-nama-kriteria', kriteria.nama_kriteria
-                    //                     );
-                    //                 console.log(getNamaKriteria);
-                    //                 var inputName = 'nilai_' + ekskulId + '_' +
-                    //                     getNamaKriteria;
-
-
-                    //                 console.log(inputName);
-                    //                 var inputElement = document.querySelector(
-                    //                     '[name="' + inputName + '"]');
-
-                    //                 if (inputElement) {
-                    //                     inputElement.value = kriteria.nilai;
-                    //                 }
-                    //             }
-                    //         }
-                    //     }
-                    // }
-                    // Loop untuk nilai_kriteria dan mengisi input fields yang sesuai
-                    for (var ekskulId in data.data.nilai_kriteria) {
-                        if (data.data.nilai_kriteria.hasOwnProperty(ekskulId)) {
-                            var kriteriaSet = data.data.nilai_kriteria[ekskulId];
-
-                            for (var kriteriaId in kriteriaSet) {
-                                if (kriteriaSet.hasOwnProperty(kriteriaId)) {
-                                    var kriteria = kriteriaSet[kriteriaId];
-                                    var inputName = 'edit_nilai_' + ekskulId + '_' +
-                                        kriteria
-                                        .nama_kriteria;
-                                    console.log(inputName);
+                        //         for (var kriteriaId in kriteriaSet) {
+                        //             if (kriteriaSet.hasOwnProperty(kriteriaId)) {
+                        //                 var kriteria = kriteriaSet[kriteriaId];
+                        //                 var getNamaKriteria = inputElement.setAttribute(
+                        //                     'data-nama-kriteria', kriteria.nama_kriteria
+                        //                     );
+                        //                 console.log(getNamaKriteria);
+                        //                 var inputName = 'nilai_' + ekskulId + '_' +
+                        //                     getNamaKriteria;
 
 
-                                    var inputElement = document.querySelector(
-                                        '[name="' + inputName + '"]');
-                                    console.log(inputElement);
-                                    if (inputElement) {
-                                        inputElement.value = kriteria.nilai;
-                                        console.log(kriteria.nilai);
+                        //                 console.log(inputName);
+                        //                 var inputElement = document.querySelector(
+                        //                     '[name="' + inputName + '"]');
 
-                                        inputElement.setAttribute('data-nama-kriteria',
-                                            kriteria.nama_kriteria);
+                        //                 if (inputElement) {
+                        //                     inputElement.value = kriteria.nilai;
+                        //                 }
+                        //             }
+                        //         }
+                        //     }
+                        // }
+                        // Loop untuk nilai_kriteria dan mengisi input fields yang sesuai
+                        for (var ekskulId in data.data.nilai_kriteria) {
+                            if (data.data.nilai_kriteria.hasOwnProperty(ekskulId)) {
+                                var kriteriaSet = data.data.nilai_kriteria[ekskulId];
+
+                                for (var kriteriaId in kriteriaSet) {
+                                    if (kriteriaSet.hasOwnProperty(kriteriaId)) {
+                                        var kriteria = kriteriaSet[kriteriaId];
+                                        var inputName = 'edit_nilai_' + ekskulId + '_' +
+                                            kriteria
+                                            .nama_kriteria;
+                                        console.log(inputName);
+
+
+                                        var inputElement = document.querySelector(
+                                            '[name="' + inputName + '"]');
+                                        console.log(inputElement);
+                                        if (inputElement) {
+                                            inputElement.value = kriteria.nilai;
+                                            console.log(kriteria.nilai);
+
+                                            inputElement.setAttribute('data-nama-kriteria',
+                                                kriteria.nama_kriteria);
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
-                })
-                .catch(error => {
-                    console.error('Fetch error:', error);
-                });
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                    });
+            });
         });
     });
-});
 </script>

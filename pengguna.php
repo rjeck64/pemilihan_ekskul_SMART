@@ -37,11 +37,32 @@ $result = $conn->query($sql);
                                         <button type="button" class="btn btn-primary btn-rounded btn-icon edit-button" data-id="' . $row["id"] . '" data-username="' . $row["username"] . '" data-email="' . $row["email"] . '" data-level="' . $row["level"] . '">
                                             <i class="ti-pencil-alt"></i>
                                         </button>
-                                        <button type="button" class="btn btn-danger btn-rounded btn-icon delete-button" data-id="' . $row["id"] . '">
-                                            <i class="ti-trash"></i>
+                                        <button type="button" class="btn btn-danger btn-rounded btn-icon" data-toggle="modal" data-target="#modalHapus' . $row["id"] . '">
+                                                <i class="ti-trash"></i>
                                         </button>
                                       </td>';
                                 echo "</tr>";
+
+                                echo '<div class="modal fade" id="modalHapus' . $row["id"] . '" tabindex="-1" role="dialog" aria-labelledby="modalHapus' . $row["id"] . 'Label" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalHapus' . $row["id"] . 'Label">Konfirmasi Hapus Kriteria</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p>Anda yakin ingin menghapus kriteria <strong>' . $row["username"] . '</strong>?</p>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" name="id" value="' . $row["id"] . '">
+                                                        <button type="button" class="btn btn-danger delete-button" data-id="' . $row["id"] .'">Hapus</button>
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                    </div>';
                             }
                         } else {
                             echo "<tr><td colspan='5'>Tidak ada data</td></tr>";
@@ -133,6 +154,8 @@ $result = $conn->query($sql);
   </div>
 </div>
 
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   // Handle edit button click
@@ -158,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document.querySelectorAll('.delete-button').forEach(function(button) {
     button.addEventListener('click', function() {
       var id = this.getAttribute('data-id');
-      var confirmDelete = confirm("Are you sure you want to delete this record?");
+      var confirmDelete = true;
       if (confirmDelete) {
         // Send AJAX request to delete data
         $.ajax({

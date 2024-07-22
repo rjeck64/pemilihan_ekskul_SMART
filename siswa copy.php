@@ -23,12 +23,14 @@ function calculate_utility($value, $min, $max)
 }
 
 // Fetch criteria names for display
-$query_criteria = "SELECT nama_kriteria FROM kriteria ORDER BY nama_kriteria ASC";
+$query_criteria = "SELECT * FROM kriteria ORDER BY nama_kriteria ASC";
 $result_criteria = $conn->query($query_criteria);
 
 $criteria_names = [];
+$kriteria = [];
 while ($row = $result_criteria->fetch_assoc()) {
     $criteria_names[] = $row['nama_kriteria'];
+    $kriteria[] = $row['kriteria'];
     // echo $row['nama_kriteria'];
 }
 
@@ -149,6 +151,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     }
 }
 
+function UnNormalisasiAlternatif($nilai){
+  switch ($nilai) {
+    case '1':
+      return "Sangat Kurang";
+      break;
+    case '2':
+      return "Kurang";
+      break;
+    case '3':
+      return "Cukup";
+      break;
+    case '4':
+      return "Baik";
+      break;
+    case '5':
+      return "Sangat Baik";
+      break;
+  }
+}
+
 
 ?>
 
@@ -156,14 +178,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     <div class="card">
         <div class="card-body">
             <h3>Data Siswa dan Ekstrakurikuler</h3>
+            <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#tambahDataModal">Tambah
+                Data Siswa</button>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>Nama Siswa</th>
                         <th>Ekstrakurikuler</th>
-                        <?php foreach ($criteria_names as $criteria_name) : ?>
-                            <th><?php echo $criteria_name; ?></th>
+                        <?php foreach ($kriteria as $nama_kriteria) : ?>
+                            <th><?= $nama_kriteria; ?></th>
                         <?php endforeach; ?>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -192,7 +217,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         $kd_ekskul = $row_siswa['kd_ekskul'];
                         $nm_ekskul = $row_siswa['nm_ekskul'];
                         $nama_kriteria = $row_siswa['nama_kriteria'];
-                        $nilai = $row_siswa['nilai'];
+                        $nilai = UnNormalisasiAlternatif($row_siswa['nilai']);
+                        
 
                         $previous_siswa = $current_siswa;
                         $previous_edit = $current_edit;
@@ -222,6 +248,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         echo "<td>{$nilai}</td>";
 
                         if ($nama_kriteria == end($criteria_names)) {
+                            if (!in_array($kd_siswa, $kd_siswa_tampil)) {
+                                echo "<td rowspan='{$rowspan_count}'>
+                                                <button type='button' class='btn btn-primary btn-rounded btn-icon edit-btn' data-toggle='modal' data-target='#editDataModal' data-kd-siswa='{$kd_siswa}'>
+                                                <i class='ti-pencil-alt'></i>
+                                                </button>
+                                                <button type='button' class='btn btn-primary btn-rounded btn-icon edit-btn' data-toggle='modal' data-target='#editDataModal' data-kd-siswa='{$kd_siswa}'>
+                                                <i class='ti-trash'></i>
+                                                </button>
+                                              </td>";
+                                $kd_siswa_tampil[] = $kd_siswa;
+                            }
                             echo "</tr>";
                         }
                     }
@@ -263,9 +300,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                                     $kd_ekskul = $row_ekskul['kd_ekskul'];
                                     $nm_ekskul = $row_ekskul['nm_ekskul'];
 
-                                    echo "<h5>{$nm_ekskul}</h5>";
+                                    echo "<h5><b>{$nm_ekskul}</b></h5>";
 
-                                    foreach ($criteria_names as $criteria_name) {
+                                    foreach ($kriteria as $criteria_name) {
                                         echo "<div class='form-group'>";
                                         echo "<label for='nilai_{$kd_ekskul}_{$criteria_name}'>{$criteria_name}</label>";
                                         echo "<input type='number' class='form-control' id='nilai_{$kd_ekskul}_{$criteria_name}' name='nilai_{$kd_ekskul}_{$criteria_name}' required>";

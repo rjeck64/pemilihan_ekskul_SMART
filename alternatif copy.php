@@ -156,6 +156,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     <div class="card">
         <div class="card-body">
             <h3>Data Siswa dan Ekstrakurikuler</h3>
+            <button type="button" class="btn btn-primary mb-2" data-toggle="modal" data-target="#tambahDataModal">Tambah
+                Data Siswa</button>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
@@ -164,6 +166,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         <?php foreach ($criteria_names as $criteria_name) : ?>
                             <th><?php echo $criteria_name; ?></th>
                         <?php endforeach; ?>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -222,6 +225,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
                         echo "<td>{$nilai}</td>";
 
                         if ($nama_kriteria == end($criteria_names)) {
+                            if (!in_array($kd_siswa, $kd_siswa_tampil)) {
+                                echo "<td rowspan='{$rowspan_count}'>
+                                                <button type='button' class='btn btn-primary btn-rounded btn-icon edit-btn' data-toggle='modal' data-target='#editDataModal' data-kd-siswa='{$kd_siswa}'>
+                                                <i class='ti-pencil-alt'></i>
+                                                </button>
+                                                <button type='button' class='btn btn-primary btn-rounded btn-icon edit-btn' data-toggle='modal' data-target='#editDataModal' data-kd-siswa='{$kd_siswa}'>
+                                                <i class='ti-trash'></i>
+                                                </button>
+                                              </td>";
+                                $kd_siswa_tampil[] = $kd_siswa;
+                            }
                             echo "</tr>";
                         }
                     }

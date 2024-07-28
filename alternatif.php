@@ -155,7 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 <div class="col-lg-12 grid-margin stretch-card">
     <div class="card">
         <div class="card-body">
-            <h3>Data Siswa dan Ekstrakurikuler</h3>
+            <h3>Data Siswa Alternatif</h3>
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>

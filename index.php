@@ -175,6 +175,12 @@ $i = $_GET['i'] ?? null;
                             <span class="menu-title">Hasil Akhir</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="cetak.php" target="_blank" onclick="window.open(this.href, '_blank'); return false;">
+                            <i class="ti-agenda menu-icon"></i>
+                            <span class="menu-title">Cetak</span>
+                        </a>
+                    </li>
 
                     <!-- <li class="nav-item">
             <a class="nav-link" href="index.php?i=user">
